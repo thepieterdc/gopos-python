@@ -68,8 +68,7 @@ class GoposClient:
         :return: the timezone
         """
         # Send the request.
-        data = self._call(
-            f"/timezone?latitude={latitude}&longitude={longitude}")
+        data = self._call(f"/timezone?latitude={latitude}&longitude={longitude}")
         parsed = dacite.from_dict(TimezoneResponse, data)
 
         # Extract the timezone.

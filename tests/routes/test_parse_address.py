@@ -1,6 +1,7 @@
 def test_parse_address(gopos):
     address = gopos.parse_address(
-        "Apple 10955 N Tantau Ave, Cupertino, CA 95014, United States")
+        "Apple 10955 N Tantau Ave, Cupertino, CA 95014, United States"
+    )
 
     assert address.city == "cupertino"
     assert address.country == "united states"
