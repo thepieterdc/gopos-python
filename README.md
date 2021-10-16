@@ -1,2 +1,2 @@
 # gopos-python
-Python bindings for gopos (https://github.com/thepieterdc/gopos)
+Python bindings for gopos (https://github.com/thepieterdc/gopos).
