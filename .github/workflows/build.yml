@@ -1,0 +1,36 @@
+name: Build
+
+on:
+  push:
+    branches-ignore:
+      - master
+
+jobs:
+  python:
+    name: Python ${{ matrix.python }} on ${{ matrix.os }}
+
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [macos-latest, ubuntu-latest]
+        python: [3.8, 3.9]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: conda-incubator/setup-miniconda@v2
+        with:
+          auto-update-conda: true
+          python-version: ${{ matrix.python }}
+
+      - shell: bash -l {0}
+        run: |
+          conda install curl poetry -c conda-forge
+
+      - shell: bash -l {0}
+        run: poetry install --no-root
+
+      - shell: bash -l {0}
+        run: poetry build

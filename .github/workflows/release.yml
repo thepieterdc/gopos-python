@@ -1,0 +1,51 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version number
+        required: true
+
+jobs:
+  pip:
+    name: Publish package to pip
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: conda-incubator/setup-miniconda@v2
+        with:
+          auto-update-conda: true
+          python-version: 3.8
+
+      - shell: bash -l {0}
+        run: |
+          conda install curl poetry -c conda-forge
+
+      - shell: bash -l {0}
+        run: poetry install --no-root
+
+      - shell: bash -l {0}
+        run: poetry version ${{ github.event.inputs.version }}
+
+      - shell: bash -l {0}
+        run: poetry publish --build
+
+  release:
+    name: Create the release
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Create release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          draft: false
+          prerelease: false
+          release_name: ${{ github.event.inputs.version }}
+          tag_name: ${{ github.event.inputs.version }}

@@ -1,0 +1,41 @@
+name: Test
+
+on:
+  push:
+    branches-ignore:
+      - master
+
+jobs:
+  integration:
+    name: Integration (Python ${{ matrix.python }})
+
+    strategy:
+      fail-fast: true
+      matrix:
+        python: [ 3.8, 3.9 ]
+
+    runs-on: ubuntu-latest
+
+    services:
+      gopos:
+        image: ghcr.io/thepieterdc/gopos:latest
+        ports:
+          - 8000:8000
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: conda-incubator/setup-miniconda@v2
+        with:
+          auto-update-conda: true
+          python-version: ${{ matrix.python }}
+
+      - shell: bash -l {0}
+        run: |
+          conda install curl poetry -c conda-forge
+
+      - shell: bash -l {0}
+        run: poetry install --no-root
+
+      - shell: bash -l {0}
+        run: pytest -v ./tests
