@@ -31,8 +31,9 @@ jobs:
       - shell: bash -l {0}
         run: poetry version ${{ github.event.inputs.version }}
 
-      - shell: bash -l {0}
-        run: poetry publish --build
+      - uses: JRubics/poetry-publish@master
+        with:
+          pypi_token: ${{ secrets.PYPI_TOKEN }}
 
   release:
     name: Create the release
