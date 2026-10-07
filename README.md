@@ -23,7 +23,7 @@ print(client.parse_address(address))
 
 # Output:
 # GoposAddress(
-#    category=None, 
+#    category=None,
 #    city='paris',
 #    city_district=None,
 #    country=None,
