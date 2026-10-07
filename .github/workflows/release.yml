@@ -9,44 +9,36 @@ on:
 
 jobs:
   pip:
-    name: Publish package to pip
+    name: Publish package to PyPI
 
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
 
-      - uses: conda-incubator/setup-miniconda@v2
-        with:
-          auto-update-conda: true
-          python-version: 3.8
+      - uses: astral-sh/setup-uv@v10
 
-      - shell: bash -l {0}
-        run: |
-          conda install curl poetry -c conda-forge
+      - run: uv version ${{ github.event.inputs.version }}
 
-      - shell: bash -l {0}
-        run: poetry install --no-root
+      - run: uv build
 
-      - shell: bash -l {0}
-        run: poetry version ${{ github.event.inputs.version }}
-
-      - uses: JRubics/poetry-publish@master
-        with:
-          pypi_token: ${{ secrets.PYPI_TOKEN }}
+      - run: uv publish
+        env:
+          UV_PUBLISH_TOKEN: ${{ secrets.PYPI_TOKEN }}
 
   release:
     name: Create the release
 
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+
     steps:
       - name: Create release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v3
         with:
           draft: false
           prerelease: false
-          release_name: ${{ github.event.inputs.version }}
+          name: ${{ github.event.inputs.version }}
           tag_name: ${{ github.event.inputs.version }}

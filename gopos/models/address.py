@@ -3,8 +3,6 @@ import dataclasses
 # Public interface.
 __all__ = ["GoposAddress"]
 
-from typing import Optional
-
 
 @dataclasses.dataclass
 class GoposAddress:
@@ -15,23 +13,23 @@ class GoposAddress:
     https://github.com/openvenues/libpostal#parser-labels.
     """
 
-    category: Optional[str] = None
-    city: Optional[str] = None
-    city_district: Optional[str] = None
-    country: Optional[str] = None
-    country_region: Optional[str] = None
-    entrance: Optional[str] = None
-    house: Optional[str] = None
-    house_number: Optional[str] = None
-    island: Optional[str] = None
-    level: Optional[str] = None
-    near: Optional[str] = None
-    po_box: Optional[str] = None
-    postcode: Optional[str] = None
-    road: Optional[str] = None
-    staircase: Optional[str] = None
-    state: Optional[str] = None
-    state_district: Optional[str] = None
-    suburb: Optional[str] = None
-    unit: Optional[str] = None
-    world_region: Optional[str] = None
+    category: str | None = None
+    city: str | None = None
+    city_district: str | None = None
+    country: str | None = None
+    country_region: str | None = None
+    entrance: str | None = None
+    house: str | None = None
+    house_number: str | None = None
+    island: str | None = None
+    level: str | None = None
+    near: str | None = None
+    po_box: str | None = None
+    postcode: str | None = None
+    road: str | None = None
+    staircase: str | None = None
+    state: str | None = None
+    state_district: str | None = None
+    suburb: str | None = None
+    unit: str | None = None
+    world_region: str | None = None

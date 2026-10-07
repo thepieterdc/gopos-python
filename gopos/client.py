@@ -1,4 +1,4 @@
-from typing import Any, Dict
+from typing import Any
 from urllib.parse import quote_plus
 
 import dacite
@@ -19,7 +19,7 @@ class GoposClient:
         """
         self._base = base
 
-    def _call(self, endpoint: str) -> Dict[str, Any]:
+    def _call(self, endpoint: str) -> dict[str, Any]:
         """
         Calls the service.
 
@@ -49,7 +49,7 @@ class GoposClient:
         # Extract the status.
         return parsed.status
 
-    def get_place_details(self, place_id: str) -> Dict[str, Any]:
+    def get_place_details(self, place_id: str) -> dict[str, Any]:
         """
         Gets the details of the given Google Place ID.
 
@@ -74,7 +74,7 @@ class GoposClient:
         # Extract the timezone.
         return parsed.timezone
 
-    def parse_address(self, query: str, country: str = None) -> GoposAddress:
+    def parse_address(self, query: str, country: str | None = None) -> GoposAddress:
         """
         Parses the address for the given query.
 
