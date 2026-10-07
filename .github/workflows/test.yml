@@ -31,4 +31,7 @@ jobs:
 
       - run: uv sync
 
+      - name: Wait for gopos
+        run: curl --retry 30 --retry-delay 1 --retry-connrefused --retry-all-errors --fail --silent http://localhost:8000/health
+
       - run: uv run pytest -v ./tests/
