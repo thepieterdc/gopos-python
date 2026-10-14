@@ -4,7 +4,12 @@ from urllib.parse import quote_plus
 import dacite
 import requests
 
-from gopos.models import GoposAddress, HealthResponse, TimezoneResponse
+from gopos.models import (
+    GoposNormaliseResponse,
+    GoposResolveResponse,
+    HealthResponse,
+    TimezoneResponse,
+)
 
 # Public interface.
 __all__ = ["GoposClient"]
@@ -74,20 +79,40 @@ class GoposClient:
         # Extract the timezone.
         return parsed.timezone
 
-    def parse_address(self, query: str, country: str | None = None) -> GoposAddress:
+    def normalise_address(self, query: str) -> list[str]:
         """
-        Parses the address for the given query.
+        Normalises the given address into its possible expansions.
 
-        :param query: the address to parse
-        :param country: (optional) if passed, this will help the address parser
-               to obtain more accurate results
-        :return: the address
+        :param query: the address to normalise
+        :return: the normalised variants of the address
+        """
+        # Send the request.
+        data = self._call(f"/address/normalise?query={quote_plus(query)}")
+        parsed = dacite.from_dict(GoposNormaliseResponse, data)
+
+        # Extract the expansions.
+        return parsed.normalised
+
+    def resolve_address(
+        self, query: str, country: str | None = None, resolver: str | None = None
+    ) -> GoposResolveResponse:
+        """
+        Resolves the given address query into structured address information.
+
+        :param query: the address to resolve
+        :param country: (optional) if passed, this will help the resolver to
+               obtain more accurate results
+        :param resolver: (optional) the resolver to use, either "libpostal"
+               (default) or "google"
+        :return: the resolved address
         """
         # Build the endpoint.
-        endpoint = f"/address/parse?query={quote_plus(query)}"
+        endpoint = f"/address/resolve?query={quote_plus(query)}"
         if country:
-            endpoint = f"{endpoint}&country={country}"
+            endpoint = f"{endpoint}&country={quote_plus(country)}"
+        if resolver:
+            endpoint = f"{endpoint}&resolver={quote_plus(resolver)}"
 
         # Send the request.
         data = self._call(endpoint)
-        return dacite.from_dict(GoposAddress, data)
+        return dacite.from_dict(GoposResolveResponse, data)
