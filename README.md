@@ -17,30 +17,10 @@ from gopos import GoposClient
 # Initialise a client.
 client = GoposClient("http://gopos.local:8000")
 
-# Parse the given address.
+# Resolve the given address.
 address = "Champ de Mars, 5 Av. Anatole France, 75007 Paris"
-print(client.parse_address(address))
+print(client.resolve_address(address, country="fr"))
 
-# Output:
-# GoposAddress(
-#    category=None,
-#    city='paris',
-#    city_district=None,
-#    country=None,
-#    country_region=None,
-#    entrance=None,
-#    house=None,
-#    house_number=None,
-#    island=None,
-#    level=None,
-#    near=None,
-#    po_box=None,
-#    postcode='75007',
-#    road='champ de mars 5 av. anatole france',
-#    staircase=None,
-#    state=None,
-#    state_district=None,
-#    suburb=None,
-#    unit=None,
-#    world_region=None)
+# Normalise the given address into its possible expansions.
+print(client.normalise_address(address))
 ```
