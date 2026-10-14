@@ -1,6 +1,6 @@
 [build-system]
 build-backend = "uv_build"
-requires = ["uv_build>=0.12.23,<0.14"]
+requires = ["uv_build>=0.13.1,<0.14"]
 
 [project]
 name = "gopos"
@@ -29,9 +29,9 @@ Repository = "https://github.com/thepieterdc/gopos-python"
 
 [dependency-groups]
 dev = [
-    "pre-commit>=4.6.2",
+    "pre-commit>=4.7.0",
     "pytest>=9.1.1",
-    "ruff>=0.16.10",
+    "ruff>=0.17.0",
 ]
 
 [tool.uv.build-backend]
