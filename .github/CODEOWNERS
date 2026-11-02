@@ -1,1 +1,7 @@
 * @thepieterdc
+
+# Files updated by Dependabot do not require a code owner review, so that
+# its pull requests can be merged automatically.
+/.github/workflows/
+/pyproject.toml
+/uv.lock
